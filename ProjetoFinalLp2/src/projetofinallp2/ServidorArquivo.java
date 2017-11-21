@@ -39,7 +39,7 @@ public class ServidorArquivo implements Runnable{
     
     public static LinkedList<String> arquivosDisponiveis; // Lista dos aquivos disponiveis
     public static LinkedList<ServidorArquivo> threadsAtivos; // Lista dos clientes ativos
-    String path = "C:/Users/Ktatal/Desktop/ArquivosServidor"; // Local dos arquivos do servidor
+    String path = System.getProperty("user.dir") + "/ArquivosServidor"; // Local dos arquivos do servidor
     public static File arquivo; // arquivo que vai ser enviado/baixado
     
     Socket ns;
@@ -79,15 +79,20 @@ public class ServidorArquivo implements Runnable{
     }
     
     private synchronized void carregaArq(){
+        
         File arq = new File(path+"data.txt");
+        
         try (InputStream in = new FileInputStream(arq)){
+            
             Scanner scan = new Scanner(in);
             String n = null;
+            
             while(scan.hasNext()){
                 n = scan.nextLine();
                 if(!arquivosDisponiveis.contains(n)) //se nao esta na lista ele adiciona
                     arquivosDisponiveis.add(n); 
             }
+            
         } catch (IOException ex) {
             Logger.getLogger(ServidorArquivo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -119,10 +124,10 @@ public class ServidorArquivo implements Runnable{
             objOut.write(buffer, 0, len); //envia arquivo
             objOut.flush();
             }
+            
             System.out.println("Servidor Enviou o Arquivo");
             fileIn.close();
            
-            
             
             }catch(SocketException e){
                 System.err.println("Cliente Cancelou Download!!");
@@ -144,7 +149,7 @@ public class ServidorArquivo implements Runnable{
         String nomeArq = recebeMensagem();
         
         try{
-            fileOut = new FileOutputStream(path+nomeArq);
+            fileOut = new FileOutputStream(path+"/"+nomeArq);
             objIn = new ObjectInputStream(ns.getInputStream());
             
             byte[] buffer = new byte[4096];
@@ -181,6 +186,7 @@ public class ServidorArquivo implements Runnable{
     
     private void salvaArq(){
         File arquivo2 = new File(path + "data.txt");
+        
         try(PrintWriter pw = new PrintWriter(arquivo2)){
             
             for(int i = 0; i < arquivosDisponiveis.size(); i++){

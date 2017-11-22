@@ -1,17 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package projetofinallp2;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +26,8 @@ import java.util.TimerTask;
  */
 public class TelaCliente extends javax.swing.JPanel {
     
+    private DataInputStream in;
+    private DataOutputStream out;
     private Socket s;
     private String pesquisa; //armazenar a palavra a ser pesquisada
     private ObjectOutputStream objOut;
@@ -32,20 +41,36 @@ public class TelaCliente extends javax.swing.JPanel {
     private Thread t;
     private TimerTask time;;
     private long tamanho; //tamanho do arquivo
-
+    
     /**
      * Creates new form TelaCliente
      */
-    public TelaCliente() {
+    public TelaCliente() throws IOException {
         
+        try{
+            s = new Socket("localhost", 4444);
+            in = new DataInputStream(s.getInputStream());
+            out = new DataOutputStream(s.getOutputStream());
+            nome = "Cliente";
+            out.writeUTF(nome);
+            
+        }catch(ConnectException e){
+            JOptionPane.showMessageDialog(null, "Servidor está offline, tente novamente mais tarde", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(1);
+        }
         try {
             initComponents();
             jFileChooser1.setEnabled(false);
             jFileChooser1.setVisible(false);
+            DefaultListModel model2 = new DefaultListModel();
+            this.s = s;
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro", "Erro inesperado, tente novamente", JOptionPane.ERROR_MESSAGE);
+            s.close();
+            System.exit(1);
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -142,23 +167,27 @@ public class TelaCliente extends javax.swing.JPanel {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
     
     public static void main(String[] args) throws IOException{
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new TelaCliente().setVisible(true);
+                try {
+                    new TelaCliente().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList LItens;
     private javax.swing.JButton jButton1;

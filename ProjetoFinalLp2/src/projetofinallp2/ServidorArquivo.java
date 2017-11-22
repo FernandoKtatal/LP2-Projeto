@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Ktatal
+ * @author Fernando e Kevin
  */
 
 public class ServidorArquivo implements Runnable{
@@ -53,7 +53,7 @@ public class ServidorArquivo implements Runnable{
     
     
     public ServidorArquivo(Socket ns) throws IOException{
-        carregaArq();
+        carregaArquivo();
         this.ns = ns;
     }
     
@@ -68,6 +68,7 @@ public class ServidorArquivo implements Runnable{
     private String recebeMensagem()
     {
         String retorno = null;
+        
         try {
             retorno = in.readUTF(); //recebe a recebe a mensagem dos clientes
         } catch (IOException ex) {
@@ -78,7 +79,7 @@ public class ServidorArquivo implements Runnable{
         
     }
     
-    private synchronized void carregaArq(){
+    private synchronized void carregaArquivo(){
         
         File arq = new File(path+"data.txt");
         
@@ -98,17 +99,18 @@ public class ServidorArquivo implements Runnable{
         }
     }
     
-    private void FazUpload(){
+    private void fazUpload(){
+        
         String nome = recebeMensagem(); //recebe o nome do arquivo
         System.out.println("Nome do Arquivo: " + nome);
         
         File file = new File(path+nome); // carrega o arquivo local
         enviaMensagem(String.valueOf(file.length())); //diz ao servidor o tamanho do arquivo que vai ser upado
-        EnviaArq(path+nome); //faz o upload
+        enviaArquivo(path+nome); //faz o upload
         
     }
     
-    private void EnviaArq(String caminho){
+    private void enviaArquivo(String caminho){
         try{
             this.fileIn = new FileInputStream(caminho);
             this.objOut = new ObjectOutputStream(ns.getOutputStream());
@@ -121,8 +123,8 @@ public class ServidorArquivo implements Runnable{
                 if(len == -1) //se ja terminou de enviar o arquivo
                     break;
             
-            objOut.write(buffer, 0, len); //envia arquivo
-            objOut.flush();
+                objOut.write(buffer, 0, len); //envia arquivo
+                objOut.flush();
             }
             
             System.out.println("Servidor Enviou o Arquivo");
@@ -144,7 +146,7 @@ public class ServidorArquivo implements Runnable{
 //        }
     }
     
-    private void RecebeArq(){
+    private void recebeArquivo(){
         int tamanho = Integer.parseInt(recebeMensagem()); //Eh passado o tamanho do arquivo
         String nomeArq = recebeMensagem();
         
@@ -168,7 +170,7 @@ public class ServidorArquivo implements Runnable{
             synchronized(MyLock1){ // Para multiplas threads adicionarem arquivos
                 if(!arquivosDisponiveis.contains(nomeArq)){
                     arquivosDisponiveis.add(nomeArq);
-                    salvaArq();
+                    salvaArquivo();
                 }
             }
             
@@ -184,7 +186,7 @@ public class ServidorArquivo implements Runnable{
     }
     
     
-    private void salvaArq(){
+    private void salvaArquivo(){
         File arquivo2 = new File(path + "data.txt");
         
         try(PrintWriter pw = new PrintWriter(arquivo2)){
@@ -208,6 +210,7 @@ public class ServidorArquivo implements Runnable{
         ServidorArquivo novo; //criando servidor
         
         while(true){
+            
             ns = s.accept();
             novo = new ServidorArquivo(ns);
             exe.execute(novo);
@@ -221,7 +224,44 @@ public class ServidorArquivo implements Runnable{
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        
+        try {
+            
+            in = new DataInputStream(ns.getInputStream());
+            out = new DataOutputStream(ns.getOutputStream());
+
+            
+            Protocolo protocolo = new Protocolo();
+        
+            String operacao; 
+            
+            while(true){
+
+                operacao = in.readUTF();  
+                System.out.println(operacao);
+
+                if(operacao.equals("pesquisar")){
+                    
+                    out.writeUTF(protocolo.pesquisar(in.readUTF()));
+                
+                } else if(operacao.equals("listar")){
+                
+                    out.writeUTF(protocolo.listar());
+                
+                } else if(operacao.equals("fazerupload")){
+                
+                    recebeArquivo();
+                
+                } else if(operacao.equals("fazerdownload")){
+                
+                    fazUpload();
+                
+                }
+
+            }
+        }catch (Exception e) {}
     }
     
 }

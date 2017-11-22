@@ -39,7 +39,7 @@ public class ServidorArquivo implements Runnable{
     
     public static LinkedList<String> arquivosDisponiveis; // Lista dos aquivos disponiveis
     public static LinkedList<ServidorArquivo> threadsAtivos; // Lista dos clientes ativos
-    String path = System.getProperty("user.dir") + "/ArquivosServidor"; // Local dos arquivos do servidor
+    String path = System.getProperty("user.dir") + "/ArquivosServidor/"; // Local dos arquivos do servidor
     public static File arquivo; // arquivo que vai ser enviado/baixado
     
     Socket ns;
@@ -149,7 +149,7 @@ public class ServidorArquivo implements Runnable{
         String nomeArq = recebeMensagem();
         
         try{
-            fileOut = new FileOutputStream(path+"/"+nomeArq);
+            fileOut = new FileOutputStream(path+nomeArq);
             objIn = new ObjectInputStream(ns.getInputStream());
             
             byte[] buffer = new byte[4096];

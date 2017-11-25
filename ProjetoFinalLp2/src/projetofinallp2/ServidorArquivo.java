@@ -134,16 +134,10 @@ public class ServidorArquivo implements Runnable{
             }catch(SocketException e){
                 System.err.println("Cliente Cancelou Download!!");
             }catch (FileNotFoundException ex) {
-//                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
             }catch (IOException ex) {
-//                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
-//        } catch() {    
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(ServidorArquivo.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(ServidorArquivo.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
     
     private void recebeArquivo(){
@@ -177,11 +171,11 @@ public class ServidorArquivo implements Runnable{
             }catch(SocketException e){
                 System.err.println("Cliente Cancelou Upload!!");
             }catch (FileNotFoundException ex) {
-//                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
             }catch (IOException ex) {
-//                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
             }catch (Exception ex) {
-//                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
     

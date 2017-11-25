@@ -8,6 +8,7 @@ package projetofinallp2;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
@@ -80,9 +82,12 @@ public class Upload extends Thread{
             Date date = new Date();
             areaTexto.insert("Arquivo:"+nomeArq+"Upado as: "+date.getHours()+":"+date.getMinutes()+"\n", JFrame.WIDTH);
             tela.setVisible(false);
-            
+            fileIn.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Arquivo não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
-            Logger.getLogger(Upload.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Desculpe, serviço temporariamente offline", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(1);
         }
     }
 }

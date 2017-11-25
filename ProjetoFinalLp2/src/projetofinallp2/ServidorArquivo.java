@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 
 public class ServidorArquivo implements Runnable{
     
+    private String nome = null;
     public static Object MyLock1;
     public static Object MyLock2;
     public static Object MyLock3;
@@ -64,7 +65,9 @@ public class ServidorArquivo implements Runnable{
             ex.printStackTrace();
         }
     }
-    
+    public String getNome(){
+        return this.nome;
+    }
     private String recebeMensagem()
     {
         String retorno = null;
@@ -72,7 +75,7 @@ public class ServidorArquivo implements Runnable{
         try {
             retorno = in.readUTF(); //recebe a recebe a mensagem dos clientes
         } catch (IOException ex) {
-//            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             return retorno;
         }
@@ -218,13 +221,12 @@ public class ServidorArquivo implements Runnable{
 
     @Override
     public void run() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
         
         try {
             
             in = new DataInputStream(ns.getInputStream());
             out = new DataOutputStream(ns.getOutputStream());
+            nome = in.readUTF().toString();
 
             
             Protocolo protocolo = new Protocolo();

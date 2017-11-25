@@ -8,9 +8,11 @@ package projetofinallp2;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -35,7 +37,7 @@ public class TelaCliente extends javax.swing.JPanel {
     private FileInputStream fileIn;
     private FileOutputStream fileOut;
     private String path = System.getProperty("user.dir") + "/ArquivosCliente/";
-//    private FazUpload fazUpload;
+    private Upload upload;
 //    private FazDownload fazDownload;
     private String nome; // precisa ??
     private Thread t;
@@ -70,6 +72,60 @@ public class TelaCliente extends javax.swing.JPanel {
             System.exit(1);
         }
     }
+    
+    private void enviaArq(String caminho){
+        float enviado = 0;
+        try{
+            fileIn = new FileInputStream(caminho);
+            objOut = new ObjectOutputStream(s.getOutputStream());
+            byte[] buffer = new byte[4096];
+            int len = 0;
+            
+            while(true){
+                len = fileIn.read(buffer);
+                
+                if(len == -1){
+                    break; //sai do laço depois que o arquivo eh enviado
+                }
+                objOut.write(buffer, 0, len);
+                objOut.flush();
+            }
+            
+            System.out.println("Cliente: Enviado");
+            fileIn.close(); //fecha o envio da arquivo
+            
+            
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, "Arquivo não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Desculpe, serviço temporariamente offline", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(1);        }
+    }
+    
+    private void recebeArq(String caminho){
+        try {
+            int tamanho = Integer.parseInt(in.readUTF());
+            fileOut = new FileOutputStream(caminho);
+            objIn = new ObjectInputStream(s.getInputStream());
+            
+            byte[] buffer = new byte[4096];
+            int len = 0;
+            int total = 0;
+            
+            while(total < tamanho){
+                len = objIn.read(buffer);
+                total += len;
+                fileOut.write(buffer, 0, len);
+            }
+            fileOut.close(); //libera o arquivo para ser usado
+           
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -185,13 +241,13 @@ public class TelaCliente extends javax.swing.JPanel {
                 tamanho = jFileChooser1.getSelectedFile().length();
                 nomeArq = jFileChooser1.getSelectedFile().getName();
                 
-               //Implementar função upload
+                //Implementar função upload
             }
             
         } catch (IOException ex) {
             Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-                
+        
     }//GEN-LAST:event_upButtonActionPerformed
     
     

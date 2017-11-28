@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -86,10 +87,10 @@ public class ServidorArquivo implements Runnable{
         
         File arq = new File(path+"data.txt");
         
-        try (InputStream in = new FileInputStream(arq)){
+        try (InputStream s = new FileInputStream(arq)){
             
-            Scanner scan = new Scanner(in);
-            String n = null;
+            Scanner scan = new Scanner(s);
+            String n;
             
             while(scan.hasNext()){
                 n = scan.nextLine();
@@ -231,7 +232,6 @@ public class ServidorArquivo implements Runnable{
     
     @Override
     public void run() {
-        int aux = 0;
         
         try {
             
@@ -254,7 +254,15 @@ public class ServidorArquivo implements Runnable{
                     out.writeUTF(protocolo.pesquisar(in.readUTF()));
                     
                 } else if(operacao.equals("listar")){
-                    out.writeUTF(protocolo.listar(aux++));
+                    
+                    ArrayList<String> lista = protocolo.listar();
+                    
+                    for (String item : lista) {
+                        out.writeUTF(item);
+                    }
+                    
+                    out.writeUTF("FIM DE LISTAGEM");
+                    
                     
                 } else if(operacao.equals("fazerupload")){
                     

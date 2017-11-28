@@ -5,6 +5,8 @@
  */
 package projetofinallp2;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Kevin e Fernando
@@ -26,14 +28,17 @@ public class Protocolo {
        return "Nenhum arquivo encontrado."; //Nao foram achados arquivos
     }
     
-    public String listar(int id)
-    {
+    public ArrayList listar()
+    {        
+        ArrayList<String> lista = new ArrayList();
         
-        for(int i = id ; i < ServidorArquivo.arquivosDisponiveis.size();i++) {
-            return ServidorArquivo.arquivosDisponiveis.get(i);
+        for(int i = 0 ; i < ServidorArquivo.arquivosDisponiveis.size();i++) {  
+            
+            lista.add(ServidorArquivo.arquivosDisponiveis.get(i));
+
         }
         
-        return "NENHUM ARQUIVO";
+        return lista;
 
     }
     

@@ -97,8 +97,7 @@ public class TelaCliente extends javax.swing.JFrame {
             jList1.setModel(model);
             System.out.println("mostrando lista");
             
-            while( ! (arquivoEncontrado = in.readUTF()).equals("NENHUM ARQUIVO") ){
-                System.out.println("ENTROU NESSE WHILE");
+            while( ! (arquivoEncontrado = in.readUTF()).equals("FIM DE LISTAGEM")){
                 model.addElement(arquivoEncontrado);
             }
 

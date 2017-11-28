@@ -264,15 +264,15 @@ public class TelaCliente extends javax.swing.JFrame {
         try{
             Socket socket;
             socket = new Socket("localhost", 4444);
-            String caminhoArq;
+            String caminhoArquivo;
             String nomeArq;
             
-            caminhoArq = jFileChooser1.getSelectedFile().getAbsolutePath();
+            caminhoArquivo = jFileChooser1.getSelectedFile().getAbsolutePath();
             
-            if(!caminhoArq.equals(null)){
+            if(!caminhoArquivo.equals(null)){
                 tamanho = jFileChooser1.getSelectedFile().length();
                 nomeArq = jFileChooser1.getSelectedFile().getName();
-                upload = new Upload(socket, caminhoArq, tamanho, nomeArq, jTextArea1);
+                upload = new Upload(socket, caminhoArquivo, tamanho, nomeArq, jTextArea1);
                 upload.start();
                 
             }

@@ -127,6 +127,7 @@ public class ServidorArquivo implements Runnable{
             int len;
             
             while(true){
+                
                 len = fileIn.read(buffer);
                 if(len == -1) //se ja terminou de enviar o arquivo
                     break;
@@ -152,16 +153,17 @@ public class ServidorArquivo implements Runnable{
         try{
             
             int tamanho = Integer.parseInt(in.readUTF()); //Eh passado o tamanho do arquivo
-            String nomeArq = recebeMensagem();
+            String nomeArquivo = in.readUTF();
             
-            fileOut = new FileOutputStream(path+nomeArq);
+            fileOut = new FileOutputStream(path+nomeArquivo);
             objIn = new ObjectInputStream(ns.getInputStream());
             
             byte[] buffer = new byte[4096];
             int len = 0;
             int total = 0;
             
-            while (total < len) {
+            while (total < tamanho) {
+                
                 len = objIn.read(buffer);
                 total += len;
                 fileOut.write(buffer, 0, len);
@@ -171,8 +173,8 @@ public class ServidorArquivo implements Runnable{
             fileOut.close(); //Libera arquivo para ser utilizado
             
             synchronized(MyLock1){ // Para multiplas threads adicionarem arquivos
-                if(!arquivosDisponiveis.contains(nomeArq)){
-                    arquivosDisponiveis.add(nomeArq);
+                if(!arquivosDisponiveis.contains(nomeArquivo)){
+                    arquivosDisponiveis.add(nomeArquivo);
                     salvaArquivo();
                 }
             }

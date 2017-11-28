@@ -19,8 +19,8 @@ public class Protocolo {
              }
          }
          
-//       for(int i=0; i < threadsAtivos.size(); i++){
-//           System.out.println(threadsAtivos.get(i).toString());           
+//       for(int i=0; i < ServidorArquivo.threadsAtivos.size(); i++){
+//           System.out.println(ServidorArquivo.threadsAtivos.get(i).toString());           
 //       }
        
        return "Nenhum arquivo encontrado."; //Nao foram achados arquivos

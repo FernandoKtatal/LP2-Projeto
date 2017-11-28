@@ -104,12 +104,16 @@ public class ServidorArquivo implements Runnable{
     
     private void fazUpload(){
         
-        String nome = recebeMensagem(); //recebe o nome do arquivo
-        System.out.println("Nome do Arquivo: " + nome);
-        
-        File file = new File(path+nome); // carrega o arquivo local
-        enviaMensagem(String.valueOf(file.length())); //diz ao servidor o tamanho do arquivo que vai ser upado
-        enviaArquivo(path+nome); //faz o upload
+        try {
+            String nome = in.readUTF(); //recebe o nome do arquivo
+            System.out.println("Nome do Arquivo: " + nome);
+            
+            File file = new File(path+nome); // carrega o arquivo local
+            out.writeUTF(String.valueOf(file.length())); //diz ao servidor o tamanho do arquivo que vai ser upado
+            enviaArquivo(path+nome); //faz o upload
+        } catch (IOException ex) {
+            Logger.getLogger(ServidorArquivo.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
@@ -144,10 +148,11 @@ public class ServidorArquivo implements Runnable{
     }
     
     private void recebeArquivo(){
-        int tamanho = Integer.parseInt(recebeMensagem()); //Eh passado o tamanho do arquivo
-        String nomeArq = recebeMensagem();
-        
         try{
+        
+            int tamanho = Integer.parseInt(in.readUTF()); //Eh passado o tamanho do arquivo
+            String nomeArq = recebeMensagem();
+        
             fileOut = new FileOutputStream(path+nomeArq);
             objIn = new ObjectInputStream(ns.getInputStream());
             
@@ -226,7 +231,7 @@ public class ServidorArquivo implements Runnable{
             
             in = new DataInputStream(ns.getInputStream());
             out = new DataOutputStream(ns.getOutputStream());
-            nome = in.readUTF().toString();
+            nome = in.readUTF();
 
             
             Protocolo protocolo = new Protocolo();
@@ -249,6 +254,7 @@ public class ServidorArquivo implements Runnable{
                 } else if(operacao.equals("fazerupload")){
                 
                     recebeArquivo();
+                    protocolo.listar();
                 
                 } else if(operacao.equals("fazerdownload")){
                 

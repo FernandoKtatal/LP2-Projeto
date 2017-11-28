@@ -8,14 +8,17 @@ package projetofinallp2;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
@@ -60,7 +63,7 @@ public class Download extends Thread {
             float porcento;
             int len;
             float total = 0;
-            out.writeUTF("fazdownload");
+            out.writeUTF("fazerdownload");
             out.writeUTF(escolhido);
             tamanho = Integer.valueOf(in.readUTF());
             
@@ -84,6 +87,12 @@ public class Download extends Thread {
             
             j.insert("Arquivo: "+ escolhido+" Baixado as: "+ d.getHours()+":"+d.getMinutes(),JFrame.WIDTH);
             
+            
+        }catch (FileNotFoundException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (SocketException ex) {
+            JOptionPane.showMessageDialog(null, "Desculpe, serviço temporariamente offline", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(1);
             
         } catch (IOException ex) {
             Logger.getLogger(Download.class.getName()).log(Level.SEVERE, null, ex);

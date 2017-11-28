@@ -38,7 +38,7 @@ public class TelaCliente extends javax.swing.JFrame {
     private FileOutputStream fileOut;
     private String path = System.getProperty("user.dir") + "/ArquivosCliente/";
     private Upload upload;
-//    private FazDownload fazDownload;
+    private Download download;
     private String nome; // precisa ??
     private Thread t;
     private TimerTask time;;
@@ -71,6 +71,39 @@ public class TelaCliente extends javax.swing.JFrame {
         }
     }
 
+    
+    public String getNome(){
+        return this.nome;
+    }
+    
+    private String informacoes(){
+        String escolhido;
+        escolhido = String.valueOf(jList1.getSelectedValuesList());
+        escolhido = escolhido.replace("[", "");
+        escolhido = escolhido.replace("]", "");
+        
+        return escolhido;
+    }
+    
+    public void MetodoAttLista(){
+        
+        try {
+            String arquivoEncontrado;
+            
+            out.writeUTF("listar"); //Envia protocolo de listagem
+            
+            DefaultListModel model = new DefaultListModel();
+            
+            jList1.setModel(model);
+            System.out.println("mostrando lista");
+//            while( ! (arquivoEncontrado = in.readUTF()).equals(FIMLISTAGEM) ){
+//                model.addElement(arquivoEncontrado);
+//            }
+        } catch (IOException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void enviaArq(String caminho){
         float enviado = 0;
         try{
@@ -146,6 +179,11 @@ public class TelaCliente extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jBDown.setText("Download");
+        jBDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBDownActionPerformed(evt);
+            }
+        });
 
         jBUp.setText("Upload");
         jBUp.addActionListener(new java.awt.event.ActionListener() {
@@ -231,14 +269,32 @@ public class TelaCliente extends javax.swing.JFrame {
             if(!caminhoArq.equals(null)){
                 tamanho = jFileChooser1.getSelectedFile().length();
                 nomeArq = jFileChooser1.getSelectedFile().getName();
+                upload = new Upload(socket, caminhoArq, tamanho, nomeArq, jTextArea1);
+                upload.start();
                 
-                //Implementar função upload
             }
-            
+            MetodoAttLista();
         } catch (IOException ex) {
             Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jBUpActionPerformed
+
+    private void jBDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDownActionPerformed
+        try {
+            String escolhido;
+            escolhido = informacoes();
+            
+            Socket socket;
+            socket = new Socket("localhost", 4444);
+            if(!escolhido.equals("")){
+                download = new Download(socket, path+escolhido, escolhido, jTextArea1);
+                download.start();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jBDownActionPerformed
 
     /**
      * @param args the command line arguments
@@ -268,6 +324,9 @@ public class TelaCliente extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        
+        
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {

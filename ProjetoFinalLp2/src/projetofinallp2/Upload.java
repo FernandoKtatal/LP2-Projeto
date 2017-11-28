@@ -80,7 +80,7 @@ public class Upload extends Thread{
             }
             
             Date date = new Date();
-            areaTexto.insert("Arquivo: "+nomeArq+"Upado as: "+date.getHours()+":"+date.getMinutes()+"\n", JFrame.WIDTH);
+            areaTexto.insert("Arquivo: "+nomeArq+" Upado as: "+date.getHours()+":"+date.getMinutes()+"\n", JFrame.WIDTH);
             tela.setVisible(false);
             fileIn.close();
         } catch (FileNotFoundException ex) {

@@ -28,13 +28,13 @@ public class Protocolo {
     
     public String listar(int id)
     {
-        String lista = "";
         
         for(int i = id ; i < ServidorArquivo.arquivosDisponiveis.size();i++) {
-            lista += ServidorArquivo.arquivosDisponiveis.get(i);
+            return ServidorArquivo.arquivosDisponiveis.get(i);
         }
+        
+        return "NENHUM ARQUIVO";
 
-        return lista;
     }
     
 }

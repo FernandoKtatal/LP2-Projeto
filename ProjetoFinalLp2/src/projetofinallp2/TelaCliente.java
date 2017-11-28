@@ -97,15 +97,18 @@ public class TelaCliente extends javax.swing.JFrame {
             jList1.setModel(model);
             System.out.println("mostrando lista");
             
-            while( ! (arquivoEncontrado = in.readUTF()).equals("") ){
+            while( ! (arquivoEncontrado = in.readUTF()).equals("NENHUM ARQUIVO") ){
+                System.out.println("ENTROU NESSE WHILE");
                 model.addElement(arquivoEncontrado);
             }
+
+                        
         } catch (IOException ex) {
             Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private void enviaArq(String caminho){
+    private void enviaArquivo(String caminho){
         float enviado = 0;
         try{
             fileIn = new FileInputStream(caminho);
@@ -134,7 +137,7 @@ public class TelaCliente extends javax.swing.JFrame {
             System.exit(1);        }
     }
     
-    private void recebeArq(String caminho){
+    private void recebeArquivo(String caminho){
         try {
             int tamanho = Integer.parseInt(in.readUTF());
             fileOut = new FileOutputStream(caminho);
@@ -262,8 +265,8 @@ public class TelaCliente extends javax.swing.JFrame {
         try{
             Socket socket;
             socket = new Socket("localhost", 4444);
-            String caminhoArq = "";
-            String nomeArq = "";
+            String caminhoArq;
+            String nomeArq;
             
             caminhoArq = jFileChooser1.getSelectedFile().getAbsolutePath();
             
@@ -274,6 +277,7 @@ public class TelaCliente extends javax.swing.JFrame {
                 upload.start();
                 
             }
+            
             MetodoAttLista();
         } catch (IOException ex) {
             Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);

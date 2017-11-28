@@ -189,6 +189,7 @@ public class ServidorArquivo implements Runnable{
     
     
     private void salvaArquivo(){
+        
         File arquivo2 = new File(path + "data.txt");
         
         try(PrintWriter pw = new PrintWriter(arquivo2)){

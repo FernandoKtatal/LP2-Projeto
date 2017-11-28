@@ -26,12 +26,12 @@ public class Protocolo {
        return "Nenhum arquivo encontrado."; //Nao foram achados arquivos
     }
     
-    public String listar()
+    public String listar(int id)
     {
         String lista = "";
         
-        for(int i=0; i < ServidorArquivo.arquivosDisponiveis.size();i++) {
-            lista += ServidorArquivo.arquivosDisponiveis.get(i) + "\n";
+        for(int i = id ; i < ServidorArquivo.arquivosDisponiveis.size();i++) {
+            lista = ServidorArquivo.arquivosDisponiveis.get(i);
         }
 
         return lista;

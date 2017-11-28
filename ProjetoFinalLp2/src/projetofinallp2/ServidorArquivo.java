@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package projetofinallp2;
 
 import java.io.DataInputStream;
@@ -94,7 +94,7 @@ public class ServidorArquivo implements Runnable{
             while(scan.hasNext()){
                 n = scan.nextLine();
                 if(!arquivosDisponiveis.contains(n)) //se nao esta na lista ele adiciona
-                    arquivosDisponiveis.add(n); 
+                    arquivosDisponiveis.add(n);
             }
             
         } catch (IOException ex) {
@@ -129,30 +129,30 @@ public class ServidorArquivo implements Runnable{
                 len = fileIn.read(buffer);
                 if(len == -1) //se ja terminou de enviar o arquivo
                     break;
-            
+                
                 objOut.write(buffer, 0, len); //envia arquivo
                 objOut.flush();
             }
             
             System.out.println("Servidor Enviou o Arquivo");
             fileIn.close();
-           
             
-            }catch(SocketException e){
-                System.err.println("Cliente Cancelou Download!!");
-            }catch (FileNotFoundException ex) {
-                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-            }catch (IOException ex) {
-                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+        }catch(SocketException e){
+            System.err.println("Cliente Cancelou Download!!");
+        }catch (FileNotFoundException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (IOException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void recebeArquivo(){
         try{
-        
+            
             int tamanho = Integer.parseInt(in.readUTF()); //Eh passado o tamanho do arquivo
             String nomeArq = recebeMensagem();
-        
+            
             fileOut = new FileOutputStream(path+nomeArq);
             objIn = new ObjectInputStream(ns.getInputStream());
             
@@ -176,15 +176,15 @@ public class ServidorArquivo implements Runnable{
                 }
             }
             
-            }catch(SocketException e){
-                System.err.println("Cliente Cancelou Upload!!");
-            }catch (FileNotFoundException ex) {
-                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-            }catch (IOException ex) {
-                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-            }catch (Exception ex) {
-                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        }catch(SocketException e){
+            System.err.println("Cliente Cancelou Upload!!");
+        }catch (FileNotFoundException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (IOException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (Exception ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     
@@ -201,7 +201,7 @@ public class ServidorArquivo implements Runnable{
             Logger.getLogger(ServidorArquivo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public static void main(String[] args) throws IOException {
         
         Socket ns;
@@ -223,45 +223,44 @@ public class ServidorArquivo implements Runnable{
         
         
     }
-
+    
     @Override
     public void run() {
+        int aux = 0;
         
         try {
             
             in = new DataInputStream(ns.getInputStream());
             out = new DataOutputStream(ns.getOutputStream());
             nome = in.readUTF();
-
+            
             
             Protocolo protocolo = new Protocolo();
-        
-            String operacao; 
+            
+            String operacao;
             
             while(true){
-
-                operacao = in.readUTF();  
+                
+                operacao = in.readUTF();
                 System.out.println(operacao);
-
+                
                 if(operacao.equals("pesquisar")){
                     
                     out.writeUTF(protocolo.pesquisar(in.readUTF()));
-                
+                    
                 } else if(operacao.equals("listar")){
-                
-                    out.writeUTF(protocolo.listar());
-                
+                    out.writeUTF(protocolo.listar(aux++));
+                    
                 } else if(operacao.equals("fazerupload")){
-                
+                    
                     recebeArquivo();
-                    protocolo.listar();
-                
+                    
                 } else if(operacao.equals("fazerdownload")){
-                
+                    
                     fazUpload();
-                
+                    
                 }
-
+                
             }
         }catch (Exception e) {}
     }

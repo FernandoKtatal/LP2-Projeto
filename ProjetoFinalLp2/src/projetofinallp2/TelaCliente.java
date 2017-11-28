@@ -96,9 +96,10 @@ public class TelaCliente extends javax.swing.JFrame {
             
             jList1.setModel(model);
             System.out.println("mostrando lista");
-//            while( ! (arquivoEncontrado = in.readUTF()).equals(FIMLISTAGEM) ){
-//                model.addElement(arquivoEncontrado);
-//            }
+            
+            while( ! (arquivoEncontrado = in.readUTF()).equals("") ){
+                model.addElement(arquivoEncontrado);
+            }
         } catch (IOException ex) {
             Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }

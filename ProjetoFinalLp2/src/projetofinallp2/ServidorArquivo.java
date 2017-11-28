@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 public class ServidorArquivo implements Runnable{
     
     private String nome = null;
-    public static Object MyLock1;
+    public static  Object MyLock1;
     public static Object MyLock2;
     public static Object MyLock3;
     
@@ -210,6 +210,10 @@ public class ServidorArquivo implements Runnable{
         arquivosDisponiveis = new LinkedList<>(); //criando lista de arquivos
         threadsAtivos = new LinkedList<>(); //criando lista de clientes
         ServidorArquivo novo; //criando servidor
+        
+        MyLock1 = new Object();
+        MyLock2 = new Object();
+        MyLock3 = new Object();
         
         while(true){
             

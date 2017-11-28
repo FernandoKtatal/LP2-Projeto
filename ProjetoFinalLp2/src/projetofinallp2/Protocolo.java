@@ -31,7 +31,7 @@ public class Protocolo {
         String lista = "";
         
         for(int i = id ; i < ServidorArquivo.arquivosDisponiveis.size();i++) {
-            lista = ServidorArquivo.arquivosDisponiveis.get(i);
+            lista += ServidorArquivo.arquivosDisponiveis.get(i);
         }
 
         return lista;

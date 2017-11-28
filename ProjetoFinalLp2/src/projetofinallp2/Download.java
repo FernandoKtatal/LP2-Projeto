@@ -42,16 +42,21 @@ public class Download extends Thread {
     private JTextArea j;
     
     public Download(Socket s, String caminho, String escolhido, JTextArea j){
+       
+        this.s = s;
+        this.caminho = caminho;
+        this.escolhido = escolhido;
+        this.j = j;
+        porcentagem = new Carregando(this);
+        porcentagem.setVisible(true);
+              
+        
         try {
-            this.s = s;
-            this.caminho = caminho;
-            this.escolhido = escolhido;
-            this.j = j;
-            porcentagem = new Carregando(this);
-            porcentagem.setVisible(true);
-            
             in = new DataInputStream(s.getInputStream());
             out = new DataOutputStream(s.getOutputStream());
+            
+            out.writeUTF("fazerdownload");
+            
         } catch (IOException ex) {
             Logger.getLogger(Download.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,19 +65,22 @@ public class Download extends Thread {
     
     public void run(){
         try {
+            
             float porcento;
             int len;
             float total = 0;
+            
             out.writeUTF("fazerdownload");
             out.writeUTF(escolhido);
             tamanho = Integer.valueOf(in.readUTF());
             
-            fileIn = new FileInputStream(caminho);
+            fileOut = new FileOutputStream(caminho);
             objIn = new ObjectInputStream(s.getInputStream());
             
             byte[] buffer = new byte[4096];
             
             while(total < tamanho){
+                
                 porcento = ((total/tamanho) * 100);
                 len = objIn.read(buffer);
                 total += len;
@@ -85,7 +93,7 @@ public class Download extends Thread {
             
             Date d = new Date();
             
-            j.insert("Arquivo: "+ escolhido+" Baixado as: "+ d.getHours()+":"+d.getMinutes(),JFrame.WIDTH);
+            j.insert("Arquivo: "+ escolhido+" Baixado as: "+ d.getHours()+":"+d.getMinutes() + "\n",JFrame.WIDTH);
             
             
         }catch (FileNotFoundException ex) {

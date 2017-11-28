@@ -290,6 +290,7 @@ public class TelaCliente extends javax.swing.JFrame {
             
             Socket socket;
             socket = new Socket("localhost", 4444);
+            
             if(!escolhido.equals("")){
                 download = new Download(socket, path+escolhido, escolhido, jTextArea1);
                 download.start();

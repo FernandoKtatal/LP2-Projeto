@@ -37,13 +37,15 @@ public class Upload extends Thread{
     private long tamanho;
     private JTextArea areaTexto;
     private Carregando tela;
+    private TelaCliente principal;
     
-    public Upload(Socket s, String caminho, long tamanho, String nomeArq, JTextArea areaTexto) throws IOException{
+    public Upload(Socket s, String caminho, long tamanho, String nomeArq, JTextArea areaTexto, TelaCliente principal) throws IOException{
         this.s = s;
         this.caminho = caminho;
         this.tamanho = tamanho;
         this.nomeArq = nomeArq;
         this.areaTexto = areaTexto;
+        this.principal = principal;
         tela = new Carregando(this);
         tela.setVisible(true);
         in = new DataInputStream(s.getInputStream());
@@ -84,12 +86,15 @@ public class Upload extends Thread{
             areaTexto.insert("Arquivo: "+nomeArq+"\tAção: Upload\t\tHorario: "+date.getHours()+":"+date.getMinutes()+"\tTamanho: "+tamanho+"\n", JFrame.WIDTH);
             tela.setVisible(false);
             fileIn.close();
-            
+            Thread.sleep(150);
+            principal.MetodoAttLista();
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Arquivo não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Desculpe, serviço temporariamente offline", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             System.exit(1);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Upload.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

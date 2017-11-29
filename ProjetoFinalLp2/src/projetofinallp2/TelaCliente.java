@@ -230,17 +230,9 @@ public class TelaCliente extends javax.swing.JFrame {
             if(!caminhoArquivo.equals(null)){
                 tamanho = jFileChooser1.getSelectedFile().length();
                 nomeArq = jFileChooser1.getSelectedFile().getName();
-                upload = new Upload(socket, caminhoArquivo, tamanho, nomeArq, jTextArea1);
-                upload.start();  
-                
-                try {
-                   upload.join();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-            MetodoAttLista();
+                upload = new Upload(socket, caminhoArquivo, tamanho, nomeArq, jTextArea1, this);
+                upload.start();     
+            }  
         } catch (IOException ex) {
             Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }

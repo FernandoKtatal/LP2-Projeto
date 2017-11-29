@@ -22,9 +22,10 @@ import javax.swing.JTextArea;
 
 /**
  *
- * @author Ktatal
+ * @author Fernando e Kevin
  */
 public class Upload extends Thread{
+    
     private ObjectOutputStream objOut;
     private FileInputStream fileIn;
     private DataInputStream in;
@@ -36,6 +37,7 @@ public class Upload extends Thread{
     private long tamanho;
     private JTextArea areaTexto;
     private Carregando tela;
+    
     public Upload(Socket s, String caminho, long tamanho, String nomeArq, JTextArea areaTexto) throws IOException{
         this.s = s;
         this.caminho = caminho;
@@ -82,6 +84,7 @@ public class Upload extends Thread{
             areaTexto.insert("Arquivo: "+nomeArq+"\tAção: Upload\t\tHorario: "+date.getHours()+":"+date.getMinutes()+"\tTamanho: "+tamanho+"\n", JFrame.WIDTH);
             tela.setVisible(false);
             fileIn.close();
+            
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Arquivo não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {

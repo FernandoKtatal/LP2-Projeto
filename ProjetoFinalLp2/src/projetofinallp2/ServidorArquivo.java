@@ -85,12 +85,14 @@ public class ServidorArquivo implements Runnable{
     private void fazUpload(){
         
         try {
+            
             String nome = in.readUTF(); //recebe o nome do arquivo
             System.out.println("Nome do Arquivo: " + nome);
             
             File file = new File(path+nome); // carrega o arquivo local
             out.writeUTF(String.valueOf(file.length())); //diz ao servidor o tamanho do arquivo que vai ser upado
             enviaArquivo(path+nome); //faz o upload
+            
         } catch (IOException ex) {
             Logger.getLogger(ServidorArquivo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -152,10 +154,12 @@ public class ServidorArquivo implements Runnable{
             fileOut.close(); //Libera arquivo para ser utilizado
             
             synchronized(MyLock1){ // Para multiplas threads adicionarem arquivos
+                
                 if(!arquivosDisponiveis.contains(nomeArquivo)){
                     arquivosDisponiveis.add(nomeArquivo);
                     salvaArquivo();
                 }
+                
             }
             
         }catch(SocketException e){

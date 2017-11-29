@@ -7,7 +7,7 @@ package projetofinallp2;
 
 /**
  *
- * @author Ktatal
+ * @author Kevin e Fernando
  */
 public class Carregando extends javax.swing.JFrame {
 

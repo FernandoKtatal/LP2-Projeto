@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Ktatal
+ * @author Fernando e Kevin
  */
 public class Automatico extends Thread{
     TelaCliente tela;

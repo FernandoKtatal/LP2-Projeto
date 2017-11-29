@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Ktatal
+ * @author Kevin e Fernando
  */
 public class TelaCliente extends javax.swing.JFrame {
 
@@ -49,6 +49,7 @@ public class TelaCliente extends javax.swing.JFrame {
      */
     public TelaCliente() throws IOException {
         try{
+            
             s = new Socket("localhost", 4444);
             in = new DataInputStream(s.getInputStream());
             out = new DataOutputStream(s.getOutputStream());
@@ -60,13 +61,15 @@ public class TelaCliente extends javax.swing.JFrame {
             System.exit(1);
         }
         try {
+            
             initComponents();
             MetodoAttLista();
             jFileChooser1.setEnabled(false);
             jFileChooser1.setVisible(false);
             DefaultListModel model2 = new DefaultListModel();
-//            automatico.att(); // Descomitar para atualizacao automatica;
+            //automatico.att(); // Descomentar para atualizacao automatica;
             this.s = s;
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro", "Erro inesperado, tente novamente", JOptionPane.ERROR_MESSAGE);
             s.close();
@@ -109,60 +112,7 @@ public class TelaCliente extends javax.swing.JFrame {
             Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-//    private void enviaArquivo(String caminho){
-//        float enviado = 0;
-//        try{
-//            fileIn = new FileInputStream(caminho);
-//            objOut = new ObjectOutputStream(s.getOutputStream());
-//            byte[] buffer = new byte[4096];
-//            int len = 0;
-//            
-//            while(true){
-//                len = fileIn.read(buffer);
-//                
-//                if(len == -1){
-//                    break; //sai do laço depois que o arquivo eh enviado
-//                }
-//                objOut.write(buffer, 0, len);
-//                objOut.flush();
-//            }
-//            
-//            System.out.println("Cliente: Enviado");
-//            fileIn.close(); //fecha o envio da arquivo
-//            MetodoAttLista();
-//            
-//        } catch (FileNotFoundException ex) {
-//            JOptionPane.showMessageDialog(this, "Arquivo não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
-//        } catch (IOException ex) {
-//            JOptionPane.showMessageDialog(null, "Desculpe, serviço temporariamente offline", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-//            System.exit(1);        }
-//    }
-//    
-//    private void recebeArquivo(String caminho){
-//        try {
-//            int tamanho = Integer.parseInt(in.readUTF());
-//            fileOut = new FileOutputStream(caminho);
-//            objIn = new ObjectInputStream(s.getInputStream());
-//            
-//            byte[] buffer = new byte[4096];
-//            int len = 0;
-//            int total = 0;
-//            
-//            while(total < tamanho){
-//                len = objIn.read(buffer);
-//                total += len;
-//                fileOut.write(buffer, 0, len);
-//            }
-//            fileOut.close(); //libera o arquivo para ser usado
-//           
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-    
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -276,7 +226,7 @@ public class TelaCliente extends javax.swing.JFrame {
                 tamanho = jFileChooser1.getSelectedFile().length();
                 nomeArq = jFileChooser1.getSelectedFile().getName();
                 upload = new Upload(socket, caminhoArquivo, tamanho, nomeArq, jTextArea1);
-                upload.start();
+                upload.run();
                 
             }
             

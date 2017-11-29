@@ -39,14 +39,14 @@ public class Download extends Thread {
     private String escolhido;
     private int tamanho;
     private Carregando porcentagem;
-    private JTextArea j;
+    private JTextArea areaTexto;
     
-    public Download(Socket s, String caminho, String escolhido, JTextArea j){
+    public Download(Socket s, String caminho, String escolhido, JTextArea areaTexto){
        
         this.s = s;
         this.caminho = caminho;
         this.escolhido = escolhido;
-        this.j = j;
+        this.areaTexto = areaTexto;
         porcentagem = new Carregando(this);
         porcentagem.setVisible(true);
               
@@ -92,7 +92,7 @@ public class Download extends Thread {
             fileOut.close(); //libera o arquivo
             
             Date date = new Date();
-            j.insert("Arquivo: "+escolhido+"\tAção: Download\tHorario: "+date.getHours()+":"+date.getMinutes()+"\tTamanho: "+tamanho+ "\n",JFrame.WIDTH);
+            areaTexto.insert("Arquivo: "+escolhido+"\tAção: Download\tHorario: "+date.getHours()+":"+date.getMinutes()+"\tTamanho: "+tamanho+ "\n",JFrame.WIDTH);
             
             
         }catch (FileNotFoundException ex) {

@@ -33,7 +33,7 @@ public class Automatico extends Thread{
             } catch (InterruptedException ex) {
                 Logger.getLogger(Automatico.class.getName()).log(Level.SEVERE, null, ex);
             }
-//            tela.MetodoAttLista();
+            tela.MetodoAttLista();
             
         }
     }

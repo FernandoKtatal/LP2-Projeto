@@ -79,7 +79,6 @@ public class Upload extends Thread{
             }
             
             Date date = new Date();
-//            areaTexto.insert("Arquivo: "+nomeArq+"\tAção: Download\tHorario: "+date.getHours()+":"+date.getMinutes()+"\tTamanho: "+tamanho+ "\n",JFrame.WIDTH);  
             areaTexto.insert("Arquivo: "+nomeArq+"\tAção: Upload\t\tHorario: "+date.getHours()+":"+date.getMinutes()+"\tTamanho: "+tamanho+"\n", JFrame.WIDTH);
             tela.setVisible(false);
             fileIn.close();

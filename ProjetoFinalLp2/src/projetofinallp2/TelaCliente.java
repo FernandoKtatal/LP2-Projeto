@@ -65,7 +65,7 @@ public class TelaCliente extends javax.swing.JFrame {
             jFileChooser1.setEnabled(false);
             jFileChooser1.setVisible(false);
             DefaultListModel model2 = new DefaultListModel();
-//            automatico.att();
+//            automatico.att(); // Descomitar para atualizacao automatica;
             this.s = s;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro", "Erro inesperado, tente novamente", JOptionPane.ERROR_MESSAGE);

@@ -84,16 +84,15 @@ public class Download extends Thread {
                 porcento = ((total/tamanho) * 100);
                 len = objIn.read(buffer);
                 total += len;
-                porcentagem.setPorcentagem((int)total);
+                porcentagem.setPorcentagem((int)porcento);
                 fileOut.write(buffer, 0, len);
                 
             }
             porcentagem.setVisible(false);
             fileOut.close(); //libera o arquivo
             
-            Date d = new Date();
-            
-            j.insert("Arquivo: "+ escolhido+" Baixado as: "+ d.getHours()+":"+d.getMinutes() + "\n",JFrame.WIDTH);
+            Date date = new Date();
+            j.insert("Arquivo: "+escolhido+"\tAção: Download\tHorario: "+date.getHours()+":"+date.getMinutes()+"\tTamanho: "+tamanho+ "\n",JFrame.WIDTH);
             
             
         }catch (FileNotFoundException ex) {

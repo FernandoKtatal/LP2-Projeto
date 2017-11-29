@@ -36,7 +36,6 @@ public class Upload extends Thread{
     private long tamanho;
     private JTextArea areaTexto;
     private Carregando tela;
-    //pausar download??
     public Upload(Socket s, String caminho, long tamanho, String nomeArq, JTextArea areaTexto) throws IOException{
         this.s = s;
         this.caminho = caminho;
@@ -76,11 +75,12 @@ public class Upload extends Thread{
                     break;
                 }
                 objOut.write(buffer, 0, len);
-                objOut.flush();
+                objOut.flush();   
             }
             
             Date date = new Date();
-            areaTexto.insert("Arquivo: "+nomeArq+" Upado as: "+date.getHours()+":"+date.getMinutes()+"\n", JFrame.WIDTH);
+//            areaTexto.insert("Arquivo: "+nomeArq+"\tAção: Download\tHorario: "+date.getHours()+":"+date.getMinutes()+"\tTamanho: "+tamanho+ "\n",JFrame.WIDTH);  
+            areaTexto.insert("Arquivo: "+nomeArq+"\tAção: Upload\t\tHorario: "+date.getHours()+":"+date.getMinutes()+"\tTamanho: "+tamanho+"\n", JFrame.WIDTH);
             tela.setVisible(false);
             fileIn.close();
         } catch (FileNotFoundException ex) {

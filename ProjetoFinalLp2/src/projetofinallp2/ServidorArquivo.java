@@ -36,9 +36,7 @@ public class ServidorArquivo implements Runnable{
     
     private String nome = null;
     public static  Object MyLock1;
-    public static Object MyLock2;
-    public static Object MyLock3;
-    
+   
     public static LinkedList<String> arquivosDisponiveis; // Lista dos aquivos disponiveis
     public static LinkedList<ServidorArquivo> threadsAtivos; // Lista dos clientes ativos
     String path = System.getProperty("user.dir") + "/ArquivosServidor/"; // Local dos arquivos do servidor
@@ -58,30 +56,11 @@ public class ServidorArquivo implements Runnable{
         carregaArquivo();
         this.ns = ns;
     }
-    
-    private void enviaMensagem(String mensagem){
-        try {
-            out.writeUTF(mensagem); //envia a mensagem pros clientes
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
+
     public String getNome(){
         return this.nome;
     }
-    private String recebeMensagem()
-    {
-        String retorno = null;
-        
-        try {
-            retorno = in.readUTF(); //recebe a recebe a mensagem dos clientes
-        } catch (IOException ex) {
-            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            return retorno;
-        }
-        
-    }
+    
     
     private synchronized void carregaArquivo(){
         
@@ -216,8 +195,6 @@ public class ServidorArquivo implements Runnable{
         ServidorArquivo novo; //criando servidor
         
         MyLock1 = new Object();
-        MyLock2 = new Object();
-        MyLock3 = new Object();
         
         while(true){
             

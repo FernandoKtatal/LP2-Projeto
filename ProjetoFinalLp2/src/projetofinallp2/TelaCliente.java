@@ -41,8 +41,9 @@ public class TelaCliente extends javax.swing.JFrame {
     private Download download;
     private String nome; // precisa ??
     private Thread t;
-    private TimerTask time;;
     private long tamanho; //tamanho do arquivo
+    private Automatico automatico = new Automatico(this);
+    
     /**
      * Creates new form TelaCliente
      */
@@ -60,9 +61,11 @@ public class TelaCliente extends javax.swing.JFrame {
         }
         try {
             initComponents();
+            MetodoAttLista();
             jFileChooser1.setEnabled(false);
             jFileChooser1.setVisible(false);
             DefaultListModel model2 = new DefaultListModel();
+//            automatico.att();
             this.s = s;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro", "Erro inesperado, tente novamente", JOptionPane.ERROR_MESSAGE);
@@ -107,58 +110,58 @@ public class TelaCliente extends javax.swing.JFrame {
         }
     }
     
-    private void enviaArquivo(String caminho){
-        float enviado = 0;
-        try{
-            fileIn = new FileInputStream(caminho);
-            objOut = new ObjectOutputStream(s.getOutputStream());
-            byte[] buffer = new byte[4096];
-            int len = 0;
-            
-            while(true){
-                len = fileIn.read(buffer);
-                
-                if(len == -1){
-                    break; //sai do laço depois que o arquivo eh enviado
-                }
-                objOut.write(buffer, 0, len);
-                objOut.flush();
-            }
-            
-            System.out.println("Cliente: Enviado");
-            fileIn.close(); //fecha o envio da arquivo
-            
-            
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, "Arquivo não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Desculpe, serviço temporariamente offline", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(1);        }
-    }
-    
-    private void recebeArquivo(String caminho){
-        try {
-            int tamanho = Integer.parseInt(in.readUTF());
-            fileOut = new FileOutputStream(caminho);
-            objIn = new ObjectInputStream(s.getInputStream());
-            
-            byte[] buffer = new byte[4096];
-            int len = 0;
-            int total = 0;
-            
-            while(total < tamanho){
-                len = objIn.read(buffer);
-                total += len;
-                fileOut.write(buffer, 0, len);
-            }
-            fileOut.close(); //libera o arquivo para ser usado
-           
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    private void enviaArquivo(String caminho){
+//        float enviado = 0;
+//        try{
+//            fileIn = new FileInputStream(caminho);
+//            objOut = new ObjectOutputStream(s.getOutputStream());
+//            byte[] buffer = new byte[4096];
+//            int len = 0;
+//            
+//            while(true){
+//                len = fileIn.read(buffer);
+//                
+//                if(len == -1){
+//                    break; //sai do laço depois que o arquivo eh enviado
+//                }
+//                objOut.write(buffer, 0, len);
+//                objOut.flush();
+//            }
+//            
+//            System.out.println("Cliente: Enviado");
+//            fileIn.close(); //fecha o envio da arquivo
+//            MetodoAttLista();
+//            
+//        } catch (FileNotFoundException ex) {
+//            JOptionPane.showMessageDialog(this, "Arquivo não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+//        } catch (IOException ex) {
+//            JOptionPane.showMessageDialog(null, "Desculpe, serviço temporariamente offline", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+//            System.exit(1);        }
+//    }
+//    
+//    private void recebeArquivo(String caminho){
+//        try {
+//            int tamanho = Integer.parseInt(in.readUTF());
+//            fileOut = new FileOutputStream(caminho);
+//            objIn = new ObjectInputStream(s.getInputStream());
+//            
+//            byte[] buffer = new byte[4096];
+//            int len = 0;
+//            int total = 0;
+//            
+//            while(total < tamanho){
+//                len = objIn.read(buffer);
+//                total += len;
+//                fileOut.write(buffer, 0, len);
+//            }
+//            fileOut.close(); //libera o arquivo para ser usado
+//           
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
     
     /**
      * This method is called from within the constructor to initialize the form.

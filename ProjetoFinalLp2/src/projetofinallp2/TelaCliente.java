@@ -149,6 +149,11 @@ public class TelaCliente extends javax.swing.JFrame {
         });
 
         JBSearch.setText("Search");
+        JBSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBSearchActionPerformed(evt);
+            }
+        });
 
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
@@ -258,6 +263,38 @@ public class TelaCliente extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jBDownActionPerformed
+
+    private void JBSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBSearchActionPerformed
+        try {
+            String arquivoEncontrado;
+            pesquisa = jTextField1.getText();
+            
+            boolean encontrado = false;
+            
+            out.writeUTF("pesquisar");
+            
+            out.writeUTF(pesquisa);
+            
+            DefaultListModel model = new DefaultListModel();
+            jList1.setModel(model);
+
+                
+            while( ! (arquivoEncontrado = in.readUTF()).equals("FIM DE LISTAGEM")){
+                model.addElement(arquivoEncontrado);
+
+                encontrado = true;
+            }
+            
+            if(!encontrado){
+                
+                jList1.setModel(new DefaultListModel());
+                
+                JOptionPane.showMessageDialog(this ,"Arquivo não encontrado", "Aviso", JOptionPane.INFORMATION_MESSAGE);   
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JBSearchActionPerformed
 
     /**
      * @param args the command line arguments

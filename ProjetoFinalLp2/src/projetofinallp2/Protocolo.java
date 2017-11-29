@@ -13,19 +13,18 @@ import java.util.ArrayList;
  */
 public class Protocolo {
     
-    public String pesquisar(String texto){
+    public ArrayList pesquisar(String texto){
+        
+        ArrayList<String> lista = new ArrayList();
+        
+        for(int i = 0; i < ServidorArquivo.arquivosDisponiveis.size(); i++ ){
             
-       for(int i = 0; i < ServidorArquivo.arquivosDisponiveis.size(); i++ ){
-            if( ServidorArquivo.arquivosDisponiveis.get(i).startsWith(texto) ){
-               return ServidorArquivo.arquivosDisponiveis.get(i);
-             }
-         }
-         
-//       for(int i=0; i < ServidorArquivo.threadsAtivos.size(); i++){
-//           System.out.println(ServidorArquivo.threadsAtivos.get(i).toString());           
-//       }
+            if( ServidorArquivo.arquivosDisponiveis.get(i).contains(texto) ){
+               lista.add(ServidorArquivo.arquivosDisponiveis.get(i));
+            }
+        }
        
-       return "Nenhum arquivo encontrado."; //Nao foram achados arquivos
+       return lista;
     }
     
     public ArrayList listar()

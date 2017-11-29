@@ -234,7 +234,13 @@ public class ServidorArquivo implements Runnable{
                 
                 if(operacao.equals("pesquisar")){
                     
-                    out.writeUTF(protocolo.pesquisar(in.readUTF()));
+                    ArrayList<String> lista = protocolo.pesquisar(in.readUTF());
+                    
+                    for (String item : lista) {
+                        out.writeUTF(item);
+                    }
+                    
+                    out.writeUTF("FIM DE LISTAGEM");
                     
                 } else if(operacao.equals("listar")){
                     

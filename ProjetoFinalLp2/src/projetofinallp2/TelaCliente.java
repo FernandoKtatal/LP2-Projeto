@@ -32,15 +32,10 @@ public class TelaCliente extends javax.swing.JFrame {
     private DataOutputStream out;
     private Socket s;
     private String pesquisa; //armazenar a palavra a ser pesquisada
-    private ObjectOutputStream objOut;
-    private ObjectInput objIn;
-    private FileInputStream fileIn;
-    private FileOutputStream fileOut;
     private String path = System.getProperty("user.dir") + "/ArquivosCliente/";
     private Upload upload;
     private Download download;
     private String nome; // precisa ??
-    private Thread t;
     private long tamanho; //tamanho do arquivo
     private Automatico automatico = new Automatico(this);
     
@@ -63,11 +58,9 @@ public class TelaCliente extends javax.swing.JFrame {
         try {
             
             initComponents();
-            MetodoAttLista();
             jFileChooser1.setEnabled(false);
             jFileChooser1.setVisible(false);
-            DefaultListModel model2 = new DefaultListModel();
-            //automatico.att(); // Descomentar para atualizacao automatica;
+            automatico.start(); // Atualiza a Lista automaticamente;
             this.s = s;
             
         } catch (Exception e) {
@@ -100,14 +93,14 @@ public class TelaCliente extends javax.swing.JFrame {
             
             DefaultListModel model = new DefaultListModel();
             
-            jList1.setModel(model);
             System.out.println("mostrando lista");
             
             while( ! (arquivoEncontrado = in.readUTF()).equals("FIM DE LISTAGEM")){
                 model.addElement(arquivoEncontrado);
             }
 
-                        
+            jList1.setModel(model);
+                                    
         } catch (IOException ex) {
             Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }

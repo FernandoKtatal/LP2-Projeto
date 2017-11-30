@@ -14,15 +14,11 @@ import java.util.logging.Logger;
  */
 public class Automatico extends Thread{
     TelaCliente tela;
-    int segundos = 7;
+    int segundos = 10;
     public Automatico(TelaCliente tela){
         this.tela = tela;
     }
     
-    public synchronized void att(){
-        start();
-        notifyAll();
-    }
     
     @Override
     public void run(){
@@ -32,9 +28,7 @@ public class Automatico extends Thread{
                 sleep(1000* segundos);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Automatico.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            tela.MetodoAttLista();
-            
+            }   
         }
     }
 }

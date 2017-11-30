@@ -19,7 +19,7 @@ public class Protocolo {
         
         for(int i = 0; i < ServidorArquivo.arquivosDisponiveis.size(); i++ ){
             
-            if( ServidorArquivo.arquivosDisponiveis.get(i).contains(texto) ){
+            if( ServidorArquivo.arquivosDisponiveis.get(i).toUpperCase().contains(texto.toUpperCase()) ){
                lista.add(ServidorArquivo.arquivosDisponiveis.get(i));
             }
         }

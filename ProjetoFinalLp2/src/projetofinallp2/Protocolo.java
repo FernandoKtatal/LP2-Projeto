@@ -31,7 +31,7 @@ public class Protocolo {
     {        
         ArrayList<String> lista = new ArrayList();
         
-        for(int i = 0 ; i < ServidorArquivo.arquivosDisponiveis.size();i++) {  
+        for(int i = 1 ; i < ServidorArquivo.arquivosDisponiveis.size();i++) {  
             
             lista.add(ServidorArquivo.arquivosDisponiveis.get(i));
 

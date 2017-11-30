@@ -87,12 +87,13 @@ public class ServidorArquivo implements Runnable{
         try {
             
             String nome = in.readUTF(); //recebe o nome do arquivo
-            System.out.println("Nome do Arquivo: " + nome);
             
             File file = new File(path+nome); // carrega o arquivo local
             out.writeUTF(String.valueOf(file.length())); //diz ao servidor o tamanho do arquivo que vai ser upado
             enviaArquivo(path+nome); //faz o upload
-            
+        
+        } catch (FileNotFoundException ex){
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ServidorArquivo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -117,8 +118,7 @@ public class ServidorArquivo implements Runnable{
                 objOut.flush();
             }
             
-            System.out.println("Servidor Enviou o Arquivo");
-            fileIn.close();
+            fileIn.close(); // libera o arquivo para ser usado
             
             
         }catch(SocketException e){
@@ -150,7 +150,6 @@ public class ServidorArquivo implements Runnable{
                 fileOut.write(buffer, 0, len);
             }
             
-            System.out.println("Arquivo Recebido");
             fileOut.close(); //Libera arquivo para ser utilizado
             
             synchronized(MyLock1){ // Para multiplas threads adicionarem arquivos
@@ -206,7 +205,6 @@ public class ServidorArquivo implements Runnable{
             novo = new ServidorArquivo(ns);
             exe.execute(novo);
             threadsAtivos.add(novo);
-            System.out.println("Numero de Clientes Ativos: " + Thread.activeCount());
             
         }
         
@@ -230,37 +228,32 @@ public class ServidorArquivo implements Runnable{
             while(true){
                 
                 operacao = in.readUTF();
-                System.out.println(operacao);
                 
-                if(operacao.equals("pesquisar")){
-                    
-                    ArrayList<String> lista = protocolo.pesquisar(in.readUTF());
-                    
-                    for (String item : lista) {
-                        out.writeUTF(item);
-                    }
-                    
-                    out.writeUTF("FIM DE LISTAGEM");
-                    
-                } else if(operacao.equals("listar")){
-                    
-                    ArrayList<String> lista = protocolo.listar();
-                    
-                    for (String item : lista) {
-                        out.writeUTF(item);
-                    }
-                    
-                    out.writeUTF("FIM DE LISTAGEM");
-                    
-                    
-                } else if(operacao.equals("fazerupload")){
-                    
-                    recebeArquivo();
-                    
-                } else if(operacao.equals("fazerdownload")){
-                    
-                    fazUpload();
-                    
+                switch (operacao) {
+                    case "pesquisar":
+                        {
+                            ArrayList<String> lista = protocolo.pesquisar(in.readUTF());
+                            for (String item : lista) {
+                                out.writeUTF(item);
+                            }       out.writeUTF("FIM DE LISTAGEM");
+                            break;
+                        }
+                    case "listar":
+                        {
+                            ArrayList<String> lista = protocolo.listar();
+                            for (String item : lista) {
+                                out.writeUTF(item);
+                            }       out.writeUTF("FIM DE LISTAGEM");
+                            break;
+                        }
+                    case "fazerupload":
+                        recebeArquivo();
+                        break;
+                    case "fazerdownload":
+                        fazUpload();
+                        break;
+                    default:
+                        break;
                 }
                 
             }
